@@ -4,30 +4,72 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] LayerMask groundMask;
     [SerializeField] float speed = 10;
     [SerializeField] float jumpPower = 10;
 
     Rigidbody2D rb;
+    Animator animator;
+    bool isGrounded;
 
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        float x = Input.GetAxis("Horizontal");
+        CheckGround();
 
         Vector2 velocity = rb.velocity;
-        velocity.x = speed * x;
+        velocity.x = GetSpeed();
 
-        if(Input.GetButtonDown("Jump"))
+        if(Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = jumpPower;
         }
 
         rb.velocity = velocity;
+
+        UpdateAnimator();
+        UpdateDirection();
+    }
+
+    private void CheckGround()
+    {
+       isGrounded = Physics2D.OverlapCircle(transform.position + Vector3.down * 0.1f, 0.1f, groundMask);
+    }
+
+    private float GetSpeed()
+    {
+        float x = Input.GetAxisRaw("Horizontal");
+        return speed * x;
+    }
+
+    private void UpdateDirection()
+    {
+        float currentSpeed = GetSpeed();
+
+        if (currentSpeed == 0)
+        {
+            return;
+        }
+
+        if(currentSpeed > 0)
+        {
+            transform.localScale = new Vector2(1f, 1f);
+        }
+        else
+        {
+            transform.localScale = new Vector2(-1f, 1f);
+        }
+    }
+
+    private void UpdateAnimator()
+    {
+        animator.SetFloat("Speed", Mathf.Abs(GetSpeed()));
+        animator.SetFloat("Vertical Speed", rb.velocity.y);
+        animator.SetBool("IsGrounded", isGrounded);
     }
 }
