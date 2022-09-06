@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask groundMask;
     [SerializeField] float speed = 10;
     [SerializeField] float jumpPower = 10;
+    [SerializeField] GameObject bulletPrefab;
 
     Rigidbody2D rb;
     Animator animator;
@@ -34,6 +35,11 @@ public class PlayerController : MonoBehaviour
 
         UpdateAnimator();
         UpdateDirection();
+
+        if(Input.GetButtonDown("Fire1"))
+        {
+            Shoot();
+        }
     }
 
     private void CheckGround()
@@ -71,5 +77,14 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("Speed", Mathf.Abs(GetSpeed()));
         animator.SetFloat("Vertical Speed", rb.velocity.y);
         animator.SetBool("IsGrounded", isGrounded);
+    }
+
+    private void Shoot()
+    {
+        // tocar animação
+        animator.SetTrigger("Shoot");
+
+        // disparar
+        Instantiate(bulletPrefab, transform);
     }
 }
