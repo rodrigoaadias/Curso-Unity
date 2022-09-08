@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] float speed;
     [SerializeField] float maxDuration = 5f;
+    [SerializeField] float damage = 10f;
 
     Rigidbody2D rb;
 
@@ -27,6 +28,10 @@ public class Bullet : MonoBehaviour
         if (collision.tag == "Player") return;
 
         // se for inimigo, causar dano
+        if(collision.TryGetComponent(out IDamage damage))
+        {
+            damage.Damage(this.damage);
+        }
 
         Destroy(gameObject);
     }

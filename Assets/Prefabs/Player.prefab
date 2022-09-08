@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5272031942188410637}
   - component: {fileID: 8363383003332548994}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 590504218093399512}
   - component: {fileID: 6190563242347839960}
   - component: {fileID: 5400398420458542668}
-  m_Layer: 1
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -173,8 +173,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   speed: 12
-  jumpPower: 10
+  jumpPower: 14
   bulletPrefab: {fileID: 8654470696623726312, guid: 1f4fb241c77093c4b857b20f533b68a2, type: 3}
+  shootDuration: 0.2
 --- !u!95 &5400398420458542668
 Animator:
   serializedVersion: 4
