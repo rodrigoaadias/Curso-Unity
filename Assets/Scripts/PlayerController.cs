@@ -10,11 +10,16 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] float shootDuration = 0.1f;
     [SerializeField] float health = 100f;
+    [Header("Sounds")]
+    [SerializeField] AudioSource fireSound;
+    [SerializeField] AudioSource hurtSound;
+    [SerializeField] AudioSource jumpSound;
 
     Rigidbody2D rb;
     Animator animator;
     bool isGrounded;
     float shootTimer = 0;
+    Vector2 velocity;
 
     void Start()
     {
@@ -32,19 +37,18 @@ public class PlayerController : MonoBehaviour, IDamage
             return;
         }
 
-        Vector2 velocity = rb.velocity;
+        velocity = rb.velocity;
         velocity.x = GetSpeed();
 
         if(Input.GetButtonDown("Jump") && isGrounded)
         {
-            velocity.y = jumpPower;
+            Jump();
         }
 
         if (Input.GetButtonDown("Fire1") && isGrounded)
         {
             Shoot();
             velocity = Vector2.zero;
-            shootTimer = shootDuration;
         }
 
         rb.velocity = velocity;
@@ -91,6 +95,14 @@ public class PlayerController : MonoBehaviour, IDamage
         animator.SetBool("IsGrounded", isGrounded);
     }
 
+    private void Jump()
+    {
+        velocity.y = jumpPower;
+
+        // tocar som de pulo
+        jumpSound.Play();
+    }
+
     private void Shoot()
     {
         // tocar animação
@@ -98,11 +110,18 @@ public class PlayerController : MonoBehaviour, IDamage
 
         // disparar
         Instantiate(bulletPrefab, transform);
+
+        // colcoar intervalo entre disparos
+        shootTimer = shootDuration;
+
+        // tocar som
+        fireSound.Play();
     }
 
     public void Damage(float points)
     {
         health -= points;
+        hurtSound.Play();
 
         if(health <= 0)
         {
