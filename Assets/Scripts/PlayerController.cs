@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] float jumpPower = 10;
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] float shootDuration = 0.1f;
-    [SerializeField] float health = 100f;
+    [SerializeField] float maxHealth = 100f;
     [Header("Sounds")]
     [SerializeField] AudioSource fireSound;
     [SerializeField] AudioSource hurtSound;
@@ -20,11 +20,14 @@ public class PlayerController : MonoBehaviour, IDamage
     bool isGrounded;
     float shootTimer = 0;
     Vector2 velocity;
+    float health;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        health = maxHealth;
     }
 
     void Update()
@@ -127,5 +130,15 @@ public class PlayerController : MonoBehaviour, IDamage
         {
             Destroy(gameObject);
         }
+    }
+
+    public float GetHealth()
+    {
+        return health;
+    }
+
+    public float GetMaxHealth()
+    {
+        return maxHealth;
     }
 }
